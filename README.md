@@ -49,4 +49,4 @@
 
 В конце происходит обновление Variables со списком обработанных файлов.
 
-![My ETL scheme](https://github.com/softandiron/HomeWork/blob/a2232689bd94dfadef341c76551276cc4f3b1904/GraduationWork_Final/My%20ETL.jpeg)
+![My ETL scheme](https://github.com/softandiron/GraduationWork/blob/main/My%20ETL.jpeg)
