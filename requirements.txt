@@ -1,0 +1,5 @@
+boto3==1.22.9
+pandas==1.4.2
+pandahouse==0.2.7
+clickhouse_driver==0.2.3
+
