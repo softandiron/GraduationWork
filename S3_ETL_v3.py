@@ -20,18 +20,20 @@ import logging
 import pandahouse as ph
 from clickhouse_driver import Client
 
+import credentials
+
 logging.basicConfig(level=logging.INFO)
 client = Client('localhost')
 
 # Clickhouse connection
-DB_NAME = 'tripDB'
-HOST = 'http://localhost:8123'
-USER = 'default'
-PASSWORD = ''
+DB_NAME = credentials.DB_NAME
+HOST = credentials.HOST
+USER = credentials.HOST
+PASSWORD = credentials.PASSWORD
 
 # AWS S3 buckets
-FROM_BUCKET = 'netobucket'
-TO_BUCKET = 'netobucketreports'
+FROM_BUCKET = credentials.FROM_BUCKET
+TO_BUCKET = credentials.TO_BUCKET
 
 
 def read_keys():
