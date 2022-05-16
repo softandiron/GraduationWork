@@ -20,20 +20,20 @@ import logging
 import pandahouse as ph
 from clickhouse_driver import Client
 
-import credentials
+import config
 
 logging.basicConfig(level=logging.INFO)
 client = Client('localhost')
 
 # Clickhouse connection
-DB_NAME = credentials.DB_NAME
-HOST = credentials.HOST
-USER = credentials.HOST
-PASSWORD = credentials.PASSWORD
+DB_NAME = config.DB_NAME
+HOST = config.HOST
+USER = config.HOST
+PASSWORD = config.PASSWORD
 
 # AWS S3 buckets
-FROM_BUCKET = credentials.FROM_BUCKET
-TO_BUCKET = credentials.TO_BUCKET
+FROM_BUCKET = config.FROM_BUCKET
+TO_BUCKET = config.TO_BUCKET
 
 
 def read_keys():

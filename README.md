@@ -50,3 +50,23 @@
 В конце происходит обновление Variables со списком обработанных файлов.
 
 ![My ETL scheme](https://github.com/softandiron/GraduationWork/blob/main/My%20ETL.jpeg)
+
+
+### Как пользоваться
+Для начала работы нужно создать в основной директории программы файл `config.py`
+В файле прописать необходимые данные:
+
+
+DB_NAME = 'tripDB'
+
+HOST = 'http://localhost:8123'
+
+USER = 'default'
+
+PASSWORD = ''
+
+FROM_BUCKET = 'netobucket'
+
+TO_BUCKET = 'netobucketreports'
+
+
