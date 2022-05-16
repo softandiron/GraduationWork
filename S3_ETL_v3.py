@@ -14,42 +14,40 @@ import boto3
 from botocore.exceptions import ClientError
 import pandas as pd
 import zipfile
-import csv
 import logging
 
 import pandahouse as ph
 from clickhouse_driver import Client
 
-import config
-
 logging.basicConfig(level=logging.INFO)
 client = Client('localhost')
 
-# Clickhouse connection
-DB_NAME = config.DB_NAME
-HOST = config.HOST
-USER = config.HOST
-PASSWORD = config.PASSWORD
 
-# AWS S3 buckets
-FROM_BUCKET = config.FROM_BUCKET
-TO_BUCKET = config.TO_BUCKET
-
-
-def read_keys():
+def read_config():
     """
-    Reading the AWS S3 credentials from .csv file
-    :return: access and secret keys
+    Reading credentials from the config.py
+    :return:
     """
+    try:
+        import config
 
-    with open('airflow_accessKeys.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-        next(reader, None)
-        for row in reader:
-            access_key = row[0]
-            secret_key = row[1]
-        logging.info('AWS S3 credentials has been received')
-        return access_key, secret_key
+        # Clickhouse connection
+        db_name = config.DB_NAME
+        host = config.HOST
+        user = config.HOST
+        password = config.PASSWORD
+
+        # AWS S3 buckets
+        from_bucket = config.FROM_BUCKET
+        to_bucket = config.TO_BUCKET
+
+        # AWS keys
+        access_key = config.ACCESS_KEY
+        secret_key = config.SECRET_KEY
+
+        return db_name, host, user, password, from_bucket, to_bucket, access_key, secret_key
+    except ImportError:
+        logging.warning("config.py import error")
 
 
 def get_files_list_in_bucket(s3):
@@ -244,7 +242,7 @@ def ETL():
     logging.info('Starting the task')
 
     # getting keys for our AWS S3 buckets
-    access_key, secret_key = read_keys()
+    db_name, host, user, password, from_bucket, to_bucket, access_key, secret_key = read_config()
 
     # checking our Airflow Variable to get names of the files we have already aggregated
     yesterday_in_bucket = Variable.get("files_in_bucket")

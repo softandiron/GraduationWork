@@ -69,4 +69,10 @@ FROM_BUCKET = 'netobucket'
 
 TO_BUCKET = 'netobucketreports'
 
+ACCESS_KEY = 'long key'
+
+SECRET_KEY = 'another long key'
+
+
+
 
