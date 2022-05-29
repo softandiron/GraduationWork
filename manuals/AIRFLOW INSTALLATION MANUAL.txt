@@ -1,0 +1,188 @@
+-------------------------------
+Install Airflow on Linux Ubuntu
+-------------------------------
+
+
+Install Ubuntu 21.04 on VMware:
+Go to ubuntu.com
+Go to downloads
+Download the latest ubuntu ISO.
+Install it as a new vm.
+
+
+# To install anaconda:
+Go to Anaconda.com and download the Debian file for Anaconda,
+# It looks like: Anaconda3-2021.05-Linux-x86_64.sh
+# The browse to it in terminal and run it with bash:
+hon@ubuntu:~/Downloads$ bash Anaconda3-2021.05-Linux-x86_64.sh
+
+
+Now have conda installed, you can make virtual environment with Python 3.
+
+Open a Terminal window.
+
+# Go to the airflow-environment folder:
+cd /home/hon/Documents
+
+# Create a folder named airflow-tutorial:
+mkdir airflow-environment
+
+# Change to this folder:
+cd /home/hon/Documents/airflow-environment
+
+# Create a virtual conda environment. Install Python 3.9 into it:
+conda create --name airflow-environment python=3.9
+
+# Activate the virtual env:
+conda activate airflow-environment
+
+# Print the absolute path to our working directory:
+pwd
+
+On my Ubuntu Linux VM, I get this:
+/home/hon/Documents/airflow-environment
+
+# Set the path to be the AIRFLOW_HOME env variable.
+# Note, this has to be done every time you open a new terminal window and use the Airflow CLI.
+
+# Enter this into the terminal:
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ export AIRFLOW_HOME=/home/hon/Documents/airflow-environment
+
+# Versions on apt-get...
+    # using: apt-show-versions <package>
+    # or: apt-cache policy <package>
+    # or: apt list <package>
+    # To install a particular version of a package using apt-get: sudo apt-get install <package name>=<version>
+
+# Versions on pip...
+    # Using: pip show <package>
+    # or: sudo pip show <package>
+    # To install a particular package version using pip: pip install <package>==1.10.10
+
+# Install dependencies using this in the terminal:
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ sudo apt-get update && sudo apt-get install -y python-setuptools python3-pip python-dev libffi-dev libssl-dev zip wget
+    # sudo apt-get update is used to re-synchronize the package index files from their sources.
+    # python-setuptools == python-setuptools:all/hirsute 44.1.1-1 uptodate
+    # python3-pip == python3-pip:all/hirsute 20.3.4-1ubuntu2 uptodate
+    # python-dev == installed: (none)
+    # libffi-dev == libffi-dev:amd64/hirsute 3.4~20200819gead65ca871-0ubuntu5 uptodate
+    # libssl-dev == libssl-dev:amd64/hirsute-security 1.1.1j-1ubuntu3.5 uptodate
+    # zip == zip:amd64/hirsute 3.0-12 uptodate
+    # wget == wget:amd64/hirsute 1.21-1ubuntu3 uptodate
+
+# Install Airflow + extras using pip:
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ sudo apt-get install gcc python3-dev
+    # Versions (on apt-get),
+        # gcc == gcc:amd64/hirsute 4:10.3.0-1ubuntu1 uptodate
+        # python3-dev == python3-dev:amd64/hirsute 3.9.4-1 uptodate
+
+# And then use this:
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ pip install apache-airflow
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ sudo pip install gcp
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ pip install statsd
+    # Versions on pip
+        # apache-airflow == Version: 2.1.4
+        # gcp == Package(s) not found, however, apt list gcp gives: gcp/hirsute,hirsute 0.2.1-1 all
+        # statsd == Version: 3.3.0
+
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ sudo apt-get install pkg-config libxml2-dev libxmlsec1-dev libxmlsec1-openssl
+    # Versions on apt-get
+        # pkg-config == pkg-config/hirsute,now 0.29.2-1ubuntu1 amd64 [installed]
+        # libxml2-dev == libxml2-dev/hirsute-updates,hirsute-security,now 2.9.10+dfsg-6.3ubuntu0.1 amd64 [installed]
+        # libxmlsec1-dev == libxmlsec1-dev/hirsute,now 1.2.31-1 amd64 [installed]
+        # libxmlsec1-openssl == libxmlsec1-openssl/hirsute,now 1.2.31-1 amd64 [installed]
+
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ sudo pip install sentry==2.1.2
+    # Versions on pip
+        # sentry == Version: 2.1.2
+
+# Install some extra packages for later:
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ pip install cryptography
+(airflow-environment) hon@ubuntu:~/Documents/airflow-environment$ pip install pyspark
+    # Versions
+        # cryptography == Version: 3.4.8
+        # pyspark == Version: 3.1.2
+
+
+pip install apache-airflow[kubernetes]
+    # Versions
+        # apache-airflow == Version: 2.1.4
+
+
+# Note about square brackets:
+# The command pip install splinter django would install two packages named splinter and django.
+# pip install splinter[django], on the other hand, installs a variant of the splinter package
+# which contains support for django. Note that it has nothing to do with the django package itself,
+# but is just a string defined by the splinter package for a particular feature set that gets enabled.
+
+# Validate Airflow installation by typing this into the terminal:
+    airflow version
+    # This should print: 2.1.4
+
+If you already installed Airflow before, you will get some warning about previous versions not working anymore.
+No need to worry about that.
+
+
+
+
+
+######################################
+Apache Airflow on Lunux Ubuntu - Start
+######################################
+
+# Do this once, first time:
+
+# Change to folder
+cd /Documents/airflow-environment
+
+# Activate environment
+conda activate airflow-environment
+
+# Each terminal must be given:
+export AIRFLOW_HOME=/home/hon/Documents/airflow-environment
+
+# initialize the database
+airflow db init
+
+##### Create a user, Only do this once the first time you have set up the environment
+airflow users create --role Admin --username admin --email admin --firstname admin --lastname admin --password p234Hbn%%!
+#####
+
+=========================
+
+# To run Apache Airflow, do: 1. and 2. in seperate terminal windows:
+
+# 1. To start Airflow webserver, paste all of this in first window, and hit Enter:
+cd /home/hon/Documents/airflow-environment
+conda activate airflow-environment
+export AIRFLOW_HOME=/home/hon/Documents/airflow-environment
+airflow db init
+airflow webserver -p 8080
+
+# 2. To start Airflow scheduler, paste all of this in seconed window, and hit Enter:
+cd /home/hon/Documents/airflow-environment
+conda activate airflow-environment
+export AIRFLOW_HOME=/home/hon/Documents/airflow-environment
+airflow db init
+export FLASK_ENV=development
+airflow scheduler
+
+
+# Now you can go to Airflow web frontend - Open in the browser (DO THIS):
+localhost:8080
+
+---------
+---------
+
+To stop airflow webserver:
+find the process id: (assuming 8080 is the port)
+	lsof -i tcp:8080
+kill it
+	kill <pid>
+
+Or Ctrl + c in the window to interrupt. (DO THIS)
+
+######################################
+
+
+
